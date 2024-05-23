@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class animacaoController extends Controller
 {
     // Cadastro de animacao
-    public function cadastroanimacao(AnimacaoFormRequest $request){
+    public function cadastroAnimacao(AnimacaoFormRequest $request){
         $animacao = Animacao::create([
             'titulo' => $request->titulo,
             'diretor' => $request->diretor,
