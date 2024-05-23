@@ -2,39 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FilmeFormRequest;
-use App\Http\Requests\FilmeFormRequestUpdate;
-use App\Models\Filme;
+use App\Http\Requests\SerieFormRequest;
+use App\Http\Requests\SerieFormRequestUpdate;
+use App\Models\Serie;
 use Illuminate\Http\Request;
 
-class filmeController extends Controller
+class serieController extends Controller
 {
-    // Cadastro de filme
-    public function cadastroFilme(FilmeFormRequest $request){
-        $filme = Filme::create([
+    // Cadastro de Serie
+    public function cadastroSerie(SerieFormRequest $request){
+        $Serie = Serie::create([
             'titulo' => $request->titulo,
             'diretor' => $request->diretor,
+            'studio' => $request->studio,
             'genero' => $request->genero,
             'dt_lancamento' => $request->dt_lancamento,
             'sinopse' => $request->sinopse,
             'elenco' => $request->elenco,
             'classificacao' => $request->classificacao,
             'plataformas' => $request->plataformas,
-            'duracao' => $request->duracao,
+            'episodios' => $request->episodios,
         ]);
         return response()->json([
             "success" => true,
             "message" => "Cadastrado com sucesso",
-            "data" => $filme
+            "data" => $Serie
         ], 200);
     }
 
     // Retornar todos
     public function retornarTodos(){
-        $filme = Filme::all();
+        $Serie = Serie::all();
         return response()->json([
             'status' => true,
-            'data' => $filme
+            'data' => $Serie
         ]);
     }
 
@@ -42,7 +43,7 @@ class filmeController extends Controller
     public function pesquisa(Request $request)
     {
      
-        $query = Filme::query();
+        $query = Serie::query();
        
         $query->where(function ($q) use ($request) {
             $q->where('sinopse', 'like', '%' . $request->input('pesquisa') . '%')
@@ -54,11 +55,11 @@ class filmeController extends Controller
                 ->orWhere('titulo', 'like', '%' .$request->input('pesquisa') . '%');     
         });
 
-        $filme = $query->get();
-        if (count($filme) > 0) {
+        $Serie = $query->get();
+        if (count($Serie) > 0) {
             return response()->json([
                 'status' => true,
-                'data' => $filme
+                'data' => $Serie
             ]);
         }
         return response()->json([
@@ -70,8 +71,8 @@ class filmeController extends Controller
 
     //Pesquisar por id
     public function pesquisarPorId($id){
-        $filme = Filme::find($id);
-        if($filme == null){
+        $Serie = Serie::find($id);
+        if($Serie == null){
             return response()->json([
                 'status'=> false,
                 'message' => "Produção não encontrada"
@@ -79,7 +80,7 @@ class filmeController extends Controller
         }
         return response()->json([
             'status'=> true,
-            'data'=> $filme
+            'data'=> $Serie
         ]);
     }
 
@@ -87,12 +88,12 @@ class filmeController extends Controller
     //Pesquisar por título
     public function pesquisarPorTitulo(Request $request)
     {
-        $filme = Filme::where('titulo', 'like', '%' . $request->titulo . '%')->get();
-        if (count($filme) > 0) {
+        $Serie = Serie::where('titulo', 'like', '%' . $request->titulo . '%')->get();
+        if (count($Serie) > 0) {
 
             return response()->json([
                 'status' => true,
-                'data' => $filme
+                'data' => $Serie
             ]);
         }
         return response()->json([
@@ -103,11 +104,11 @@ class filmeController extends Controller
 
     //Pesquisar por diretor
     public function pesquisarPorDiretor(Request $request){
-        $filme = Filme::where('diretor', 'like', '%' . $request->diretor . '%')->get();
-        if (count($filme) > 0) {
+        $Serie = Serie::where('diretor', 'like', '%' . $request->diretor . '%')->get();
+        if (count($Serie) > 0) {
             return response()->json([
                 'status' => true,
-                'data' => $filme
+                'data' => $Serie
             ]);
         }
         return response()->json([
@@ -118,11 +119,11 @@ class filmeController extends Controller
 
     //Pesquisar por genêro
     public function pesquisarPorGenero(Request $request){
-        $filme = Filme::where('genero', 'like', '%' . $request->genero . '%')->get();
-        if (count($filme) > 0) {
+        $Serie = Serie::where('genero', 'like', '%' . $request->genero . '%')->get();
+        if (count($Serie) > 0) {
             return response()->json([
                 'status' => true,
-                'data' => $filme
+                'data' => $Serie
             ]);
         }
         return response()->json([
@@ -133,11 +134,11 @@ class filmeController extends Controller
 
     //pesquisar por Sinopse
     public function pesquisarPorSinopse(Request $request){
-        $filme = Filme::where('sinopse', 'like', '%' . $request->sinopse . '%')->get();
-        if (count($filme) > 0) {
+        $Serie = Serie::where('sinopse', 'like', '%' . $request->sinopse . '%')->get();
+        if (count($Serie) > 0) {
             return response()->json([
                 'status' => true,
-                'data' => $filme
+                'data' => $Serie
             ]);
         }
         return response()->json([
@@ -148,14 +149,14 @@ class filmeController extends Controller
 
     //Excluir
     public function excluir($id){
-        $filme = Filme::find($id);
-        if(!isset($filme)){
+        $Serie = Serie::find($id);
+        if(!isset($Serie)){
             return response()->json([
                 "status" => false,
                 "message" => "Não foi encontrado nenhuma produção"
             ]);
         }
-        $filme->delete();
+        $Serie->delete();
     
         return response()->json([
             'status' => false,
@@ -163,10 +164,10 @@ class filmeController extends Controller
         ]);
     }
 
-    public function update(FilmeFormRequestUpdate $request){
-        $filme = filme::find($request->id);
+    public function update(SerieFormRequestUpdate $request){
+        $Serie = Serie::find($request->id);
     
-        if(!isset($filme)){
+        if(!isset($Serie)){
             return response()->json([
                 "status" => false,
                 "message" => "Não foi encontrado nenhuma produção"
@@ -174,42 +175,46 @@ class filmeController extends Controller
         }
     
         if(isset($request->titulo)){
-            $filme->titulo = $request->titulo;
+            $Serie->titulo = $request->titulo;
         }
 
         if(isset($request->diretor)){
-            $filme->diretor = $request->diretor;
+            $Serie->diretor = $request->diretor;
         }
         
+        if(isset($request->studio)){
+            $Serie->studio = $request->studio;
+        }
+
         if(isset($request->genero)){
-            $filme->genero = $request->genero;
+            $Serie->genero = $request->genero;
         }
         
         if(isset($request->dt_lancamento)){
-            $filme->dt_lancamento = $request->dt_lancamento;
+            $Serie->dt_lancamento = $request->dt_lancamento;
         }
         
         if(isset($request->sinopse)){
-            $filme->sinopse = $request->sinopse;
+            $Serie->sinopse = $request->sinopse;
         }
         
         if(isset($request->elenco)){
-            $filme->elenco = $request->elenco;
+            $Serie->elenco = $request->elenco;
         }
         
         if(isset($request->classificacao)){
-            $filme->classificacao = $request->classificacao;
+            $Serie->classificacao = $request->classificacao;
         }
         
         if(isset($request->plataforma)){
-            $filme->plataforma = $request->plataforma;
+            $Serie->plataforma = $request->plataforma;
         }
 
-        if(isset($request->duracao)){
-            $filme->duracao = $request->duracao;
+        if(isset($request->episodios)){
+            $Serie->episodios = $request->episodios;
         }
 
-        $filme->update();
+        $Serie->update();
     
         return response()->json([
             "status" => false,
