@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class serieController extends Controller
 {
     // Cadastro de Serie
-    public function cadastroSerie(SerieFormRequest $request){
+    public function cadastroSeries(SerieFormRequest $request){
         $Serie = Serie::create([
             'titulo' => $request->titulo,
             'diretor' => $request->diretor,
@@ -31,7 +31,7 @@ class serieController extends Controller
     }
 
     // Retornar todos
-    public function retornarTodos(){
+    public function retornarTodosSeries(){
         $Serie = Serie::all();
         return response()->json([
             'status' => true,
@@ -40,7 +40,7 @@ class serieController extends Controller
     }
 
     //Pesquisar por título/genero/diretor/sinopse
-    public function pesquisa(Request $request)
+    public function pesquisaSerie(Request $request)
     {
      
         $query = Serie::query();
@@ -148,7 +148,7 @@ class serieController extends Controller
     }
 
     //Excluir
-    public function excluir($id){
+    public function deletarSerie($id){
         $Serie = Serie::find($id);
         if(!isset($Serie)){
             return response()->json([
@@ -164,7 +164,7 @@ class serieController extends Controller
         ]);
     }
 
-    public function update(SerieFormRequestUpdate $request){
+    public function updateSerie(SerieFormRequestUpdate $request){
         $Serie = Serie::find($request->id);
     
         if(!isset($Serie)){

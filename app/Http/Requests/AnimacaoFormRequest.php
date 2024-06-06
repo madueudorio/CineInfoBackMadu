@@ -49,7 +49,7 @@ class AnimacaoFormRequest extends FormRequest
             'titulo.required' => 'Titulo do Stream é obrigátorio',
             'titulo.max' => 'O campo Título deve ter no máximo 100 caractéris',
             'titulo.min' => 'O campo Título deve ter no mínimo 2 caractéris',
-            'titulo.unique' => 'Titulo já esxiste no sistema',
+            'titulo.unique' => 'Titulo já existe no sistema',
 
             
             'diretor.required' => 'diretor do Stream obrigátorio',

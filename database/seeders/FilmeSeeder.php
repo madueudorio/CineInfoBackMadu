@@ -6,14 +6,15 @@ use App\Models\Filme;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class filmesSeeder extends Seeder
+class FilmeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        for ($i = 0; $i < 5; $i++){
+ 
+for ($i = 0; $i < 100; $i++){
             Filme::create([
                 'titulo' => 'titulo'.$i,
                 'diretor' => 'diretor'.$i,

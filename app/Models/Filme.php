@@ -9,16 +9,20 @@ class Filme extends Model
 {
     use HasFactory;
 
-    protected $fillable =[
 
+    protected $fillable =[
         'titulo',
-        'diretor',
-        'genero',
-        'dt_lancamento',
-        'sinopse',
-        'elenco',
-        'classificacao',
-        'plataformas',
-        'duracao'
+         'diretor',
+         'genero',
+         'dt_lancamento',
+         'duracao',
+         'sinopse',
+         'elenco',
+         'classificacao',
+         'plataformas',
+          
+    
     ];
+
+
 }

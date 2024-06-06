@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 class animacaoController extends Controller
 {
     // Cadastro de animacao
-    public function cadastroAnimacao(AnimacaoFormRequest $request){
+    public function cadastroAnimacao(AnimacaoFormRequest $request)
+    {
         $animacao = Animacao::create([
             'titulo' => $request->titulo,
             'diretor' => $request->diretor,
@@ -30,7 +31,8 @@ class animacaoController extends Controller
     }
 
     // Retornar todos
-    public function retornarTodos(){
+    public function retornarTodosAnimacao()
+    {
         $animacao = animacao::all();
         return response()->json([
             'status' => true,
@@ -39,18 +41,18 @@ class animacaoController extends Controller
     }
 
     //Pesquisar por título/genero/diretor/sinopse/classificacao/plataformas
-    public function pesquisa(Request $request)
+    public function pesquisaAnimacao(Request $request)
     {
-     
+
         $query = animacao::query();
-       
+
         $query->where(function ($q) use ($request) {
             $q->where('sinopse', 'like', '%' . $request->input('pesquisa') . '%')
-                ->orWhere('genero', 'like', '%' .$request->input('pesquisa') . '%')
-                ->orWhere('diretor', 'like', '%' .$request->input('pesquisa') . '%')     
-                ->orWhere('classificacao', 'like', '%' .$request->input('pesquisa') . '%')    
-                ->orWhere('plataformas', 'like', '%' .$request->input('pesquisa') . '%')   
-                ->orWhere('titulo', 'like', '%' .$request->input('pesquisa') . '%');     
+                ->orWhere('genero', 'like', '%' . $request->input('pesquisa') . '%')
+                ->orWhere('diretor', 'like', '%' . $request->input('pesquisa') . '%')
+                ->orWhere('classificacao', 'like', '%' . $request->input('pesquisa') . '%')
+                ->orWhere('plataformas', 'like', '%' . $request->input('pesquisa') . '%')
+                ->orWhere('titulo', 'like', '%' . $request->input('pesquisa') . '%');
         });
 
         $animacao = $query->get();
@@ -68,17 +70,18 @@ class animacaoController extends Controller
 
 
     //Pesquisar por id
-    public function pesquisarPorId($id){
+    public function pesquisarPorId($id)
+    {
         $animacao = animacao::find($id);
-        if($animacao == null){
+        if ($animacao == null) {
             return response()->json([
-                'status'=> false,
+                'status' => false,
                 'message' => "Produção não encontrada"
-            ]);     
+            ]);
         }
         return response()->json([
-            'status'=> true,
-            'data'=> $animacao
+            'status' => true,
+            'data' => $animacao
         ]);
     }
 
@@ -101,7 +104,8 @@ class animacaoController extends Controller
     }
 
     //Pesquisar por diretor
-    public function pesquisarPorDiretor(Request $request){
+    public function pesquisarPorDiretor(Request $request)
+    {
         $animacao = animacao::where('diretor', 'like', '%' . $request->diretor . '%')->get();
         if (count($animacao) > 0) {
             return response()->json([
@@ -116,7 +120,8 @@ class animacaoController extends Controller
     }
 
     //Pesquisar por genêro
-    public function pesquisarPorGenero(Request $request){
+    public function pesquisarPorGenero(Request $request)
+    {
         $animacao = animacao::where('genero', 'like', '%' . $request->genero . '%')->get();
         if (count($animacao) > 0) {
             return response()->json([
@@ -131,7 +136,8 @@ class animacaoController extends Controller
     }
 
     //pesquisar por Sinopse
-    public function pesquisarPorSinopse(Request $request){
+    public function pesquisarPorSinopse(Request $request)
+    {
         $animacao = animacao::where('sinopse', 'like', '%' . $request->sinopse . '%')->get();
         if (count($animacao) > 0) {
             return response()->json([
@@ -146,70 +152,72 @@ class animacaoController extends Controller
     }
 
     //Excluir
-    public function excluir($id){
+    public function deletarAnimacao($id)
+    {
         $animacao = animacao::find($id);
-        if(!isset($animacao)){
+        if (!isset($animacao)) {
             return response()->json([
                 "status" => false,
                 "message" => "Não foi encontrado nenhuma produção"
             ]);
         }
         $animacao->delete();
-    
+
         return response()->json([
             'status' => false,
             'message' => 'Programa excluido com sucesso'
         ]);
     }
 
-    public function update(AnimacaoFormRequestUpdate $request){
+    public function updateanimacao(AnimacaoFormRequestUpdate $request)
+    {
         $animacao = Animacao::find($request->id);
-    
-        if(!isset($animacao)){
+
+        if (!isset($animacao)) {
             return response()->json([
                 "status" => false,
                 "message" => "Não foi encontrado nenhuma produção"
             ]);
         }
-    
-        if(isset($request->titulo)){
+
+        if (isset($request->titulo)) {
             $animacao->titulo = $request->titulo;
         }
 
-        if(isset($request->diretor)){
+        if (isset($request->diretor)) {
             $animacao->diretor = $request->diretor;
         }
-        
-        if(isset($request->studio)){
+
+        if (isset($request->studio)) {
             $animacao->studio = $request->studio;
         }
 
-        if(isset($request->genero)){
+        if (isset($request->genero)) {
             $animacao->genero = $request->genero;
         }
-        
-        if(isset($request->dt_lancamento)){
+
+        if (isset($request->dt_lancamento)) {
             $animacao->dt_lancamento = $request->dt_lancamento;
         }
-        
-        if(isset($request->sinopse)){
+
+        if (isset($request->sinopse)) {
             $animacao->sinopse = $request->sinopse;
         }
-        
-        if(isset($request->classificacao)){
+
+        if (isset($request->classificacao)) {
             $animacao->classificacao = $request->classificacao;
         }
-        
-        if(isset($request->plataforma)){
+
+        if (isset($request->plataforma)) {
             $animacao->plataforma = $request->plataforma;
         }
 
-        if(isset($request->episodios)){
+        if (isset($request->episodios)) {
             $animacao->episodios = $request->episodios;
         }
 
         $animacao->update();
-    
+
         return response()->json([
             "status" => false,
             "message" => "Programa atualizado"
